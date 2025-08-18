@@ -21,4 +21,4 @@ runs:
       with:
         tool: wash
         git: "https://github.com/wasmCloud/wash"
-        tag: {{ inputs.wash-version }}
+        tag: ${{ inputs.wash-version }}
