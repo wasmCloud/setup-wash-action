@@ -6,6 +6,8 @@
 
 This action installs the [wash](https://github.com/cosmonic-labs/wash) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
+> **_NOTE:_**  This action sets up the next version of `wash` which does not yet have a stable 1.0 release. 
+
 ## Usage
 
 Add the following step to your workflow to install `wash`:
@@ -14,14 +16,14 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
  uses: cosmonic-labs/setup-wash-action@main
  with:
-  wash-version: latest # Or specify a version, e.g. "0.51.1"
+  wash-version: 0.51.1 # Optional: specify a version, e.g. "0.51.1"
 ```
 
 ### Inputs
 
-| Name         | Description                                                                | Default |
-| ------------ | -------------------------------------------------------------------------- | ------- |
-| wash-version | The version of wash to install (e.g., `0.51`, `0.51.1`, `^0.51`, `latest`) | latest  |
+| Name         | Description                                                               | Default            |
+| ------------ | ------------------------------------------------------------------------- | ------------------ |
+| wash-version | The version of wash to install. Note this uses tags until 1.0 is released | wash-v1.0.0-beta.2 |
 
 ## Example Workflow
 
