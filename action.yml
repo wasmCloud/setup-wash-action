@@ -1,6 +1,6 @@
 name: "setup-wash-action"
 description: "GitHub Action to install the wash CLI for wasmCloud development."
-author: "Cosmonic"
+author: "wasmCloud"
 
 branding:
   icon: "terminal"
