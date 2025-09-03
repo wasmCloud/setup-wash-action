@@ -9,13 +9,18 @@ branding:
 # Define your inputs here.
 inputs:
   wash-version:
-    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, latest"
+    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-beta.5, latest"
     required: false
-    default: "wash-v1.0.0-beta.1"
+    default: "wash-v1.0.0-beta.5"
 
 runs:
   using: "composite"
   steps:
+    - name: Install wasm32-wasip2 target for Rust
+      shell: bash
+      run: |
+        rustup target add wasm32-wasip2
+
     - name: Install wash using taiki-e/cache-cargo-install-action
       uses: taiki-e/cache-cargo-install-action@v1
       with:
