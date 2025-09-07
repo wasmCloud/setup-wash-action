@@ -25,3 +25,10 @@ jobs:
         id: test-action
 
         uses: ./
+
+      - name: Test action with plugins
+        id: test-action-with-plugins
+        uses: ./
+        with:
+          wash-version: "wash-v1.0.0-beta.7"
+          plugins: "ghcr.io/cosmonic-labs/plugins/openapi2mcp:0.3.0"
