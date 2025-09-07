@@ -11,7 +11,11 @@ inputs:
   wash-version:
     description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-beta.5, latest"
     required: false
-    default: "wash-v1.0.0-beta.7"
+    default: "wash-v1.0.0-beta.5"
+  plugins:
+    description: "Comma-delimited list of plugin URIs to install (e.g., 'ghcr.io/wasmcloud/wash-plugin:latest,ghcr.io/example/other-plugin:v1.0')"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -27,3 +31,45 @@ runs:
         tool: wash
         git: "https://github.com/wasmCloud/wash"
         tag: ${{ inputs.wash-version }}
+
+    - name: Get wash plugin directory
+      shell: bash
+      if: ${{ inputs.plugins != '' }}
+      id: wash-plugin-dir
+      run: |
+        plugin_dir=$(wash config info -o json | jq -r '.data.plugin_dir')
+        echo "plugin_dir=$plugin_dir" >> $GITHUB_OUTPUT
+
+    - name: Cache wash plugins
+      uses: actions/cache@v4
+      if: ${{ inputs.plugins != '' }}
+      with:
+        path: |
+          ${{ steps.wash-plugin-dir.outputs.plugin_dir }}
+        key: wash-plugins-${{ hashFiles('**/action.yml') }}-${{ inputs.plugins }}
+        restore-keys: |
+          wash-plugins-${{ hashFiles('**/action.yml') }}-
+
+    - name: Install wash plugins
+      shell: bash
+      if: ${{ inputs.plugins != '' }}
+      run: |
+        set -euo pipefail
+
+        plugins_input="${{ inputs.plugins }}"
+
+        # Split comma-delimited list into array
+        IFS=',' read -ra PLUGIN_URIS <<< "$plugins_input"
+
+        for plugin_uri in "${PLUGIN_URIS[@]}"; do
+          plugin_uri="$(echo "$plugin_uri" | xargs)"  # Trim whitespace
+          [ -z "$plugin_uri" ] && continue
+          echo "Installing plugin: $plugin_uri"
+          plugin_name="${plugin_uri##*/}"
+          plugin_name="${plugin_name%%:*}"
+          if ! wash plugin list | grep -q -- "$plugin_name"; then
+            wash plugin install "$plugin_uri"
+          else
+            echo "Plugin $plugin_name already installed, skipping"
+          fi
+        done
