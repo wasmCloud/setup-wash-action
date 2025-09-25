@@ -6,6 +6,14 @@
 
 This action installs the [wash](https://github.com/wasmCloud/wash) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
+### Security Features
+
+This action implements secure installation practices:
+- **Direct binary download** from official GitHub releases
+- **SHA256 checksum verification** to prevent man-in-the-middle attacks
+- **HTTPS-only downloads** with proper error handling
+- **Cross-platform support** for Linux, macOS, and Windows
+
 > **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 1.0 release.
 
 ## Usage

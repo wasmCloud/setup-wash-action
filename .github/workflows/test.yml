@@ -1,0 +1,30 @@
+name: Test setup-wash-action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-installation:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        wash-version: ["wash-v1.0.0-beta.7", "latest"]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup wash CLI
+        uses: ./
+        with:
+          wash-version: ${{ matrix.wash-version }}
+
+      - name: Verify wash installation
+        shell: bash
+        run: |
+          wash --version
+          which wash || where wash
