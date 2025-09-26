@@ -9,9 +9,9 @@ branding:
 # Define your inputs here.
 inputs:
   wash-version:
-    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-beta.5, latest"
+    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-beta.9, latest"
     required: false
-    default: "wash-v1.0.0-beta.5"
+    default: "wash-v1.0.0-beta.9"
   plugins:
     description: "Comma-delimited list of plugin URIs to install (e.g., 'ghcr.io/wasmcloud/wash-plugin:latest,ghcr.io/example/other-plugin:v1.0')"
     required: false
@@ -25,12 +25,36 @@ runs:
       run: |
         rustup target add wasm32-wasip2
 
-    - name: Install wash using taiki-e/cache-cargo-install-action
-      uses: taiki-e/cache-cargo-install-action@v1
-      with:
-        tool: wash
-        git: "https://github.com/wasmCloud/wash"
-        tag: ${{ inputs.wash-version }}
+    - name: Install wash CLI
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+
+        # Check if wash is already in tool cache
+        wash_version="${{ inputs.wash-version }}"
+        wash_cache_dir="${RUNNER_TOOL_CACHE}/wash/${wash_version}/x64"
+
+        if [[ -f "${wash_cache_dir}/wash" ]]; then
+          echo "wash ${wash_version} found in tool cache"
+          echo "${wash_cache_dir}" >> $GITHUB_PATH
+        else
+          echo "Installing wash ${wash_version}"
+
+          # Install wash using the official install script with verification
+          export WASH_VERSION="${wash_version}"
+          curl -sSL https://raw.githubusercontent.com/wasmcloud/wash/main/install.sh | bash -s -- -v
+
+          # Add to tool cache
+          mkdir -p "${wash_cache_dir}"
+          cp ./wash "${wash_cache_dir}/wash"
+          chmod +x "${wash_cache_dir}/wash"
+
+          # Add to PATH
+          echo "${wash_cache_dir}" >> $GITHUB_PATH
+          echo "wash installed and cached successfully"
+        fi
 
     - name: Get wash plugin directory
       shell: bash

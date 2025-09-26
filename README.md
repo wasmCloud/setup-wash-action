@@ -16,7 +16,7 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
   uses: wasmCloud/setup-wash-action@main
   with:
-    wash-version: 1.0.0-beta.5 # Optional
+    wash-version: wash-1.0.0-beta.9 # Optional
     plugins: "ghcr.io/wasmcloud/plugin-name:v1.0" # Optional, comma-delimited list of plugin URIs
 ```
 
@@ -24,7 +24,7 @@ Add the following step to your workflow to install `wash`:
 
 | Name         | Description                                                                       | Default            |
 | ------------ | --------------------------------------------------------------------------------- | ------------------ |
-| wash-version | The version of wash to install. Note this uses tags until 1.0 is released         | wash-v1.0.0-beta.5 |
+| wash-version | The version of wash to install. Note this uses tags until 1.0 is released         | wash-v1.0.0-beta.9 |
 | plugins      | YAML array of plugin URIs to install (OCI artifacts from registries like ghcr.io) | (none)             |
 
 ### Plugin Caching
@@ -59,7 +59,7 @@ jobs:
    - name: Setup wash CLI
     uses: wasmCloud/setup-wash-action@main
     with:
-     wash-version: 1.0.0-beta.5
+     wash-version: wash-1.0.0-beta.9
      plugins: "ghcr.io/wasmcloud/example-plugin:v0.1.0,ghcr.io/wasmcloud/another-plugin:v1.2.3"
    - name: Check wash version
     run: wash --version
