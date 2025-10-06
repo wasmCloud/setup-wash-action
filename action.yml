@@ -25,36 +25,77 @@ runs:
       run: |
         rustup target add wasm32-wasip2
 
-    - name: Install wash CLI
+    - name: Cache wash CLI
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # 4.3.0
+      id: wash-cache
+      with:
+        path: |
+          ${{ runner.tool_cache }}/wash/${{ inputs.wash-version }}
+        key: wash-${{ runner.os }}-${{ runner.arch }}-${{ inputs.wash-version }}
+
+    - name: Install wash CLI (Unix)
       shell: bash
+      if: steps.wash-cache.outputs.cache-hit != 'true' && runner.os != 'Windows'
       env:
-        GH_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         set -euo pipefail
 
-        # Check if wash is already in tool cache
         wash_version="${{ inputs.wash-version }}"
-        wash_cache_dir="${RUNNER_TOOL_CACHE}/wash/${wash_version}/x64"
+        wash_cache_dir="${RUNNER_TOOL_CACHE}/wash/${wash_version}"
 
-        if [[ -f "${wash_cache_dir}/wash" ]]; then
-          echo "wash ${wash_version} found in tool cache"
-          echo "${wash_cache_dir}" >> $GITHUB_PATH
-        else
-          echo "Installing wash ${wash_version}"
+        echo "Installing wash ${wash_version}"
 
-          # Install wash using the official install script with verification
-          export WASH_VERSION="${wash_version}"
-          curl -sSL https://raw.githubusercontent.com/wasmcloud/wash/main/install.sh | bash -s -- -v
+        # Install wash using the official install script with verification
+        export WASH_VERSION="${wash_version}"
+        curl -sSL https://raw.githubusercontent.com/wasmcloud/wash/main/install.sh | bash -s -- -v
 
-          # Add to tool cache
-          mkdir -p "${wash_cache_dir}"
-          cp ./wash "${wash_cache_dir}/wash"
-          chmod +x "${wash_cache_dir}/wash"
+        # Add to tool cache
+        mkdir -p "${wash_cache_dir}"
+        cp ./wash "${wash_cache_dir}/wash"
+        chmod +x "${wash_cache_dir}/wash"
 
-          # Add to PATH
-          echo "${wash_cache_dir}" >> $GITHUB_PATH
-          echo "wash installed and cached successfully"
-        fi
+        echo "wash installed and cached successfully"
+
+    - name: Install wash CLI (Windows)
+      shell: pwsh
+      if: steps.wash-cache.outputs.cache-hit != 'true' && runner.os == 'Windows'
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        $ErrorActionPreference = 'Stop'
+
+        $wash_version = "${{ inputs.wash-version }}"
+        $wash_cache_dir = "$env:RUNNER_TOOL_CACHE\wash\$wash_version"
+
+        Write-Host "Installing wash $wash_version"
+
+        # Install wash using the official PowerShell install script with verification
+        $env:WASH_VERSION = $wash_version
+        $installScript = Invoke-WebRequest -Uri "https://raw.githubusercontent.com/wasmcloud/wash/main/install.ps1" -UseBasicParsing
+        Invoke-Expression "& { $($installScript.Content) } -Verify"
+
+        # Add to tool cache
+        New-Item -ItemType Directory -Force -Path $wash_cache_dir | Out-Null
+        Copy-Item -Path ".\wash.exe" -Destination "$wash_cache_dir\wash.exe"
+
+        Write-Host "wash installed and cached successfully"
+
+    - name: Add wash to PATH
+      shell: bash
+      if: runner.os != 'Windows'
+      run: |
+        wash_version="${{ inputs.wash-version }}"
+        wash_cache_dir="${RUNNER_TOOL_CACHE}/wash/${wash_version}"
+        echo "${wash_cache_dir}" >> $GITHUB_PATH
+
+    - name: Add wash to PATH (Windows)
+      shell: pwsh
+      if: runner.os == 'Windows'
+      run: |
+        $wash_version = "${{ inputs.wash-version }}"
+        $wash_cache_dir = "$env:RUNNER_TOOL_CACHE\wash\$wash_version"
+        Add-Content -Path $env:GITHUB_PATH -Value $wash_cache_dir
 
     - name: Get wash plugin directory
       shell: bash
