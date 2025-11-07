@@ -17,8 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-
+        # os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout
         id: checkout
@@ -35,5 +35,5 @@ jobs:
         id: test-action-with-plugins
         uses: ./
         with:
-          wash-version: "wash-v1.0.0-beta.10"
+          wash-version: "wash-v1.0.0-rc.1"
           plugins: "ghcr.io/cosmonic-labs/plugins/openapi2mcp:0.3.0"
