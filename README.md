@@ -24,7 +24,7 @@ Add the following step to your workflow to install `wash`:
 
 | Name         | Description                                                                       | Default          |
 | ------------ | --------------------------------------------------------------------------------- | ---------------- |
-| wash-version | The version of wash to install. Note this uses tags until 1.0 is released         | wash-v1.0.0-rc.1 |
+| wash-version | The version of wash to install. Note this uses tags until 1.0 is released         | wash-v1.0.0-rc.2 |
 | plugins      | YAML array of plugin URIs to install (OCI artifacts from registries like ghcr.io) | (none)           |
 
 ### Plugin Caching

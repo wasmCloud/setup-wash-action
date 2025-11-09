@@ -9,9 +9,9 @@ branding:
 # Define your inputs here.
 inputs:
   wash-version:
-    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-rc.1, latest"
+    description: "The version of wash to install (default: latest), Examples: 0.51, 0.51.1, ^0.51, ~0.51, wash-v1.0.0-rc.2, latest"
     required: false
-    default: "wash-v1.0.0-rc.1"
+    default: "wash-v1.0.0-rc.2"
   plugins:
     description: "Comma-delimited list of plugin URIs to install (e.g., 'ghcr.io/wasmcloud/wash-plugin:latest,ghcr.io/example/other-plugin:v1.0')"
     required: false
