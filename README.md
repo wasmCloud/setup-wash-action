@@ -6,7 +6,7 @@
 
 This action installs the [wash](https://github.com/wasmCloud/wash) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
-> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 2.0 release.
+> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 1.0 release.
 
 ## Usage
 
