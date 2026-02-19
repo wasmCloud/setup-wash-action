@@ -6,7 +6,7 @@
 
 This action installs the [wash](https://github.com/wasmCloud/wash) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
-> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 1.0 release.
+> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 2.0 release.
 
 ## Usage
 
@@ -16,7 +16,7 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
   uses: wasmCloud/setup-wash-action@main
   with:
-    wash-version: wash-1.0.0-rc.1 # Optional
+    wash-version: wash-v2.0.0-rc.7 # Optional
     plugins: "ghcr.io/wasmcloud/plugin-name:v1.0" # Optional, comma-delimited list of plugin URIs
 ```
 
@@ -24,7 +24,7 @@ Add the following step to your workflow to install `wash`:
 
 | Name         | Description                                                                       | Default          |
 | ------------ | --------------------------------------------------------------------------------- | ---------------- |
-| wash-version | The version of wash to install. Note this uses tags until 1.0 is released         | wash-v1.0.0-rc.2 |
+| wash-version | The version of wash to install. Note this uses tags until 2.0 is released         | wash-v2.0.0-rc.7 |
 | plugins      | YAML array of plugin URIs to install (OCI artifacts from registries like ghcr.io) | (none)           |
 
 ### Plugin Caching
@@ -59,7 +59,7 @@ jobs:
    - name: Setup wash CLI
     uses: wasmCloud/setup-wash-action@main
     with:
-     wash-version: wash-1.0.0-rc.1
+     wash-version: wash-v2.0.0-rc.7
      plugins: "ghcr.io/wasmcloud/example-plugin:v0.1.0,ghcr.io/wasmcloud/another-plugin:v1.2.3"
    - name: Check wash version
     run: wash --version
