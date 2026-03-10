@@ -30,9 +30,8 @@ jobs:
 
         uses: ./
 
-      - name: Test action with plugins
-        id: test-action-with-plugins
+      - name: Test action with specific version
+        id: test-action-with-version
         uses: ./
         with:
           wash-version: "wash-v2.0.0-rc.8"
-          plugins: "ghcr.io/wasmcloud/wash-plugins/blobstore-filesystem:0.1.0"
