@@ -6,7 +6,7 @@
 
 This action installs the [wash](https://github.com/wasmCloud/wasmCloud) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
-> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 1.0 release.
+> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 2.0 release.
 
 ## Usage
 
@@ -17,32 +17,13 @@ Add the following step to your workflow to install `wash`:
   uses: wasmCloud/setup-wash-action@main
   with:
     wash-version: wash-v2.0.0-rc.8 # Optional
-    plugins: "ghcr.io/wasmcloud/plugin-name:v1.0" # Optional, comma-delimited list of plugin URIs
 ```
 
 ### Inputs
 
-| Name         | Description                                                                       | Default          |
-| ------------ | --------------------------------------------------------------------------------- | ---------------- |
-| wash-version | The version of wash to install. Note this uses tags until 2.0 is released         | wash-v2.0.0-rc.8 |
-| plugins      | YAML array of plugin URIs to install (OCI artifacts from registries like ghcr.io) | (none)           |
-
-### Plugin Caching
-
-When plugins are specified, this action automatically caches them using `actions/cache` to improve performance across workflow runs. The action dynamically determines the correct cache and plugin directories using `wash config info`, ensuring compatibility across different wash configurations and operating systems.
-
-Since Wasm plugins are platform-agnostic, the cache is shared across different operating systems, maximizing cache hit rates across your workflows.
-
-The cache key includes:
-
-- Action configuration hash
-- Plugin list (OCI URIs and tags)
-
-Cached directories:
-
-- Plugin directory (from `wash config info -o json | jq .data.plugin_dir`)
-
-Plugins are re-downloaded when the plugin list changes. Note that mutable tags like `:latest` will only update when you modify your workflow configuration, not automatically when the underlying image changes.
+| Name         | Description                                                               | Default          |
+| ------------ | ------------------------------------------------------------------------- | ---------------- |
+| wash-version | The version of wash to install. Note this uses tags until 2.0 is released | wash-v2.0.0-rc.8 |
 
 ## Example Workflow
 
@@ -60,9 +41,6 @@ jobs:
     uses: wasmCloud/setup-wash-action@main
     with:
      wash-version: wash-v2.0.0-rc.8
-     plugins: "ghcr.io/wasmcloud/example-plugin:v0.1.0,ghcr.io/wasmcloud/another-plugin:v1.2.3"
    - name: Check wash version
     run: wash --version
-   - name: List installed plugins
-    run: wash plugin list
 ```
