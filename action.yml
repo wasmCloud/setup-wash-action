@@ -44,7 +44,7 @@ runs:
 
         # Install wash using the official install script with verification
         export WASH_VERSION="${wash_version}"
-        curl -sSL https://raw.githubusercontent.com/wasmcloud/wasmCloud/main/install.sh | bash -s -- -v
+        curl -sSL https://wasmcloud.com/sh | bash -s -- -v
 
         # Add to tool cache
         mkdir -p "${wash_cache_dir}"
@@ -68,7 +68,7 @@ runs:
 
         # Install wash using the official PowerShell install script with verification
         $env:WASH_VERSION = $wash_version
-        $installScript = Invoke-WebRequest -Uri "https://raw.githubusercontent.com/wasmcloud/wasmCloud/main/install.ps1" -UseBasicParsing
+        $installScript = Invoke-WebRequest -Uri "https://wasmcloud.com/ps1" -UseBasicParsing
         Invoke-Expression "& { $($installScript.Content) } -Verify"
 
         # Add to tool cache
