@@ -14,14 +14,14 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
   uses: wasmCloud/setup-wash-action@main
   with:
-    wash-version: wash-v2.0.1 # Optional
+    wash-version: v2.0.1 # Optional
 ```
 
 ### Inputs
 
 | Name         | Description                                 | Default        |
 | ------------ | ------------------------------------------- | -------------- |
-| wash-version | The version of wash to install              | wash-v2.0.1    |
+| wash-version | The version of wash to install              | v2.0.1    |
 
 ## Example Workflow
 
@@ -38,7 +38,7 @@ jobs:
    - name: Setup wash CLI
     uses: wasmCloud/setup-wash-action@main
     with:
-     wash-version: wash-v2.0.1
+     wash-version: v2.0.1
    - name: Check wash version
     run: wash --version
 ```

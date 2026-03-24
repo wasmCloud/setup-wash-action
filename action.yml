@@ -9,9 +9,9 @@ branding:
 # Define your inputs here.
 inputs:
   wash-version:
-    description: "The version of wash to install (default: latest), Examples: wash-v2.0.0-rc.8, latest, 0.51, 0.51.1, ^0.51, ~0.51"
+    description: "The version of wash to install (default: latest), Examples: v2.0.1, wash-v2.0.0-rc.8, latest, 0.51, 0.51.1, ^0.51, ~0.51"
     required: false
-    default: "wash-v2.0.1"
+    default: "v2.0.1"
 
 runs:
   using: "composite"

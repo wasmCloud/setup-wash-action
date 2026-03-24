@@ -34,4 +34,4 @@ jobs:
         id: test-action-with-version
         uses: ./
         with:
-          wash-version: "wash-v2.0.1"
+          wash-version: "v2.0.1"
