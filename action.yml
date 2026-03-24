@@ -11,7 +11,7 @@ inputs:
   wash-version:
     description: "The version of wash to install (default: latest), Examples: wash-v2.0.0-rc.8, latest, 0.51, 0.51.1, ^0.51, ~0.51"
     required: false
-    default: "wash-v2.0.0-rc.8"
+    default: "wash-v2.0.1"
 
 runs:
   using: "composite"
