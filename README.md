@@ -6,8 +6,6 @@
 
 This action installs the [wash](https://github.com/wasmCloud/wasmCloud) CLI, a tool for developing and managing WebAssembly (Wasm) components with [wasmCloud](https://wasmcloud.com/).
 
-> **_NOTE:_** This action sets up the next version of `wash` which does not yet have a stable 2.0 release.
-
 ## Usage
 
 Add the following step to your workflow to install `wash`:
@@ -16,14 +14,14 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
   uses: wasmCloud/setup-wash-action@main
   with:
-    wash-version: wash-v2.0.0-rc.8 # Optional
+    wash-version: wash-v2.0.1 # Optional
 ```
 
 ### Inputs
 
-| Name         | Description                                                               | Default          |
-| ------------ | ------------------------------------------------------------------------- | ---------------- |
-| wash-version | The version of wash to install. Note this uses tags until 2.0 is released | wash-v2.0.0-rc.8 |
+| Name         | Description                                 | Default        |
+| ------------ | ------------------------------------------- | -------------- |
+| wash-version | The version of wash to install              | wash-v2.0.1    |
 
 ## Example Workflow
 
@@ -40,7 +38,7 @@ jobs:
    - name: Setup wash CLI
     uses: wasmCloud/setup-wash-action@main
     with:
-     wash-version: wash-v2.0.0-rc.8
+     wash-version: wash-v2.0.1
    - name: Check wash version
     run: wash --version
 ```
