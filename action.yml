@@ -9,9 +9,9 @@ branding:
 # Define your inputs here.
 inputs:
   wash-version:
-    description: "The version of wash to install (default: latest), Examples: wash-v2.0.0-rc.8, latest, 0.51, 0.51.1, ^0.51, ~0.51"
+    description: "The version of wash to install (default: latest), Examples: v2.0.1, wash-v2.0.0-rc.8, latest, 0.51, 0.51.1, ^0.51, ~0.51"
     required: false
-    default: "wash-v2.0.0-rc.8"
+    default: "v2.0.1"
 
 runs:
   using: "composite"
@@ -34,23 +34,12 @@ runs:
       if: steps.wash-cache.outputs.cache-hit != 'true' && runner.os != 'Windows'
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        WASH_VERSION: ${{ inputs.wash-version }}
+        INSTALL_DIR: ${{ runner.tool_cache }}/wash/${{ inputs.wash-version }}
       run: |
         set -euo pipefail
-
-        wash_version="${{ inputs.wash-version }}"
-        wash_cache_dir="${RUNNER_TOOL_CACHE}/wash/${wash_version}"
-
-        echo "Installing wash ${wash_version}"
-
-        # Install wash using the official install script with verification
-        export WASH_VERSION="${wash_version}"
+        echo "Installing wash ${WASH_VERSION}"
         curl -sSL https://wasmcloud.com/sh | bash -s -- -v
-
-        # Add to tool cache
-        mkdir -p "${wash_cache_dir}"
-        cp ./wash "${wash_cache_dir}/wash"
-        chmod +x "${wash_cache_dir}/wash"
-
         echo "wash installed and cached successfully"
 
     - name: Install wash CLI (Windows)
@@ -58,23 +47,13 @@ runs:
       if: steps.wash-cache.outputs.cache-hit != 'true' && runner.os == 'Windows'
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        WASH_VERSION: ${{ inputs.wash-version }}
+        INSTALL_DIR: ${{ runner.tool_cache }}/wash/${{ inputs.wash-version }}
       run: |
         $ErrorActionPreference = 'Stop'
-
-        $wash_version = "${{ inputs.wash-version }}"
-        $wash_cache_dir = "$env:RUNNER_TOOL_CACHE\wash\$wash_version"
-
-        Write-Host "Installing wash $wash_version"
-
-        # Install wash using the official PowerShell install script with verification
-        $env:WASH_VERSION = $wash_version
+        Write-Host "Installing wash $env:WASH_VERSION"
         $installScript = Invoke-WebRequest -Uri "https://wasmcloud.com/ps1" -UseBasicParsing
         Invoke-Expression "& { $($installScript.Content) } -Verify"
-
-        # Add to tool cache
-        New-Item -ItemType Directory -Force -Path $wash_cache_dir | Out-Null
-        Copy-Item -Path ".\wash.exe" -Destination "$wash_cache_dir\wash.exe"
-
         Write-Host "wash installed and cached successfully"
 
     - name: Add wash to PATH
