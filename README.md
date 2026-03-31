@@ -19,9 +19,9 @@ Add the following step to your workflow to install `wash`:
 
 ### Inputs
 
-| Name         | Description                                 | Default        |
-| ------------ | ------------------------------------------- | -------------- |
-| wash-version | The version of wash to install              | v2.0.1    |
+| Name         | Description                    | Default |
+| ------------ | ------------------------------ | ------- |
+| wash-version | The version of wash to install | v2.0.1  |
 
 ## Example Workflow
 
