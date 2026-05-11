@@ -14,14 +14,16 @@ Add the following step to your workflow to install `wash`:
 - name: Setup wash CLI
   uses: wasmCloud/setup-wash-action@main
   with:
-    wash-version: v2.0.1 # Optional
+    wash-version: latest # Optional
 ```
+
+When `wash-version` is `latest` (the default), the action resolves the most recent release of [wasmCloud/wasmCloud](https://github.com/wasmCloud/wasmCloud) on each run and uses the resolved tag as the cache key, so a new release is picked up automatically without serving a stale cache.
 
 ### Inputs
 
 | Name         | Description                    | Default |
 | ------------ | ------------------------------ | ------- |
-| wash-version | The version of wash to install | v2.0.1  |
+| wash-version | The version of wash to install | latest  |
 
 ## Example Workflow
 
@@ -38,7 +40,7 @@ jobs:
    - name: Setup wash CLI
     uses: wasmCloud/setup-wash-action@main
     with:
-     wash-version: v2.0.1
+     wash-version: latest
    - name: Check wash version
     run: wash --version
 ```
