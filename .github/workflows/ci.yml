@@ -35,3 +35,9 @@ jobs:
         uses: ./
         with:
           wash-version: "v2.1.0"
+
+      - name: Verify requested wash version
+        shell: bash
+        run: |
+          version="$(wash --version)"
+          test "$version" = "wash 2.1.0"
