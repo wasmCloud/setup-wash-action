@@ -44,7 +44,7 @@ runs:
       with:
         path: |
           ${{ runner.tool_cache }}/wash/${{ steps.resolve.outputs.version }}
-        key: wash-${{ runner.os }}-${{ runner.arch }}-${{ steps.resolve.outputs.version }}
+        key: wash-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.resolve.outputs.version }}
 
     - name: Install wash CLI (Unix)
       shell: bash
@@ -70,7 +70,7 @@ runs:
         $ErrorActionPreference = 'Stop'
         Write-Host "Installing wash $env:WASH_VERSION"
         $installScript = Invoke-WebRequest -Uri "https://wasmcloud.com/ps1" -UseBasicParsing
-        Invoke-Expression "& { $($installScript.Content) } -Verify"
+        & ([scriptblock]::Create($installScript.Content)) -Version $env:WASH_VERSION -Verify -Force
         Write-Host "wash installed and cached successfully"
 
     - name: Add wash to PATH
